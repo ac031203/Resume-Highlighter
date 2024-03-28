@@ -17,11 +17,67 @@
         <p id="processingMessage" style="display:none;">File is being processed, your download should begin once the file is processed.</p>
     </div>
 
+    <div class="chatbot-container">
+        <div class="chatbot-header">Chatbot</div>
+        <div class="chatbot-messages" id="chatbotMessages">
+            <!-- Chat messages will be displayed here -->
+        </div>
+        <form id="chatForm" action="/send_message" method="post">
+            <input type="text" name="message" id="chatInput" placeholder="Type your message...">
+            <button type="submit" id="sendButton">Send</button>
+        </form>
+    </div>
+
     <script>
     document.getElementById('uploadForm').addEventListener('submit', function() {
         document.getElementById('processingMessage').style.display = 'block';
         document.getElementById('uploadButton').setAttribute('disabled', 'disabled');
     });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const chatInput = document.getElementById('chatInput');
+        const chatForm = document.getElementById('chatForm');
+        const chatbotMessages = document.getElementById('chatbotMessages');
+
+        chatForm.addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent the default form submission behavior
+            const message = chatInput.value.trim();
+            if (message !== '') {
+                // Display "processing" message
+                displayMessage(("You: " + message), 'user')
+                displayMessage("Generating response...", 'bot');
+                chatInput.value = '';
+                sendMessageToServer(message);
+            }
+        });
+
+        function displayMessage(message, sender) {
+            const messageElement = document.createElement('p');
+            messageElement.textContent = message;
+            messageElement.classList.add(sender);
+            chatbotMessages.appendChild(messageElement);
+        }
+
+        function sendMessageToServer(message) {
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', '/send_message', true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+                    const response = JSON.parse(xhr.responseText);
+                    // Remove "processing" message
+                    document.getElementById('processingMessage').style.display = 'none';
+                    const lastMessage = chatbotMessages.lastChild;
+                    chatbotMessages.removeChild(lastMessage);
+                    displayMessage(response.message, 'bot');
+                }
+            };
+            xhr.send('message=' + encodeURIComponent(message));
+        }
+    });
     </script>
 </body>
 </html>
+
+
+

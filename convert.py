@@ -13,6 +13,7 @@ import spacy
 from sentence_transformers import SentenceTransformer, util
 import torch
 import fitz
+from transformers import pipeline
 
 import PyPDF2
 import re
@@ -194,3 +195,31 @@ def myconvertfunc(file_path, my_query, output_pdf_path):
 
 
 
+def getresponse(question, file_path):
+    qa_pipeline = pipeline("question-answering")
+
+    context = ""
+    # question = "does he have any extra curriculars?" #please input your question here
+
+    text = convert_pdf_to_text2(file_path)
+
+    # Split the text into sentences
+    sentences = split_into_sentences(text)
+    sentences = list(set(sentences))
+
+    weighted_scores = evaluate(sentences,question)
+    dates = evaluate(sentences,"date or range of dates")
+    l = []
+    for i in range(min(15,len(dates))):
+        s = dates[i][0]
+        if(len(s)< 35):
+            l.append(s)
+    for el in weighted_scores:
+        if (el[0] in l):
+            weighted_scores.remove(el)
+    # Use the pipeline to answer the question given the context
+    for i in range(min(10,len(weighted_scores))):
+        context += weighted_scores[i][0] + "."
+    answer = qa_pipeline(question=question, context=context)
+    print(answer['answer'])
+    return answer

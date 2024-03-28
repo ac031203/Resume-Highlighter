@@ -1,35 +1,39 @@
-<!DOCTYPE html>
+/* <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PDF Converter</title>
-    <style>
+    <style> */
         /* Body styles */
         body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f0f0f0;
+            font-family: gill sans, sans-serif;
+            background-image: url(bg.jpg);
+            background-size: cover; /* Cover the entire viewport */
+            background-position: center; /* Center the background image */
+        /* background-repeat: no-repeat; Do not repeat the background image */
         }
 
         /* Container styles */
         .container {
-            max-width: 600px;
+            max-width: 650px;
             margin: 0 auto;
             padding: 20px;
         }
 
         /* Heading styles */
         h1 {
+            font-size: 50px;
             text-align: center;
             margin-bottom: 20px;
+            font-weight: bold;
+            /* color: #d66a6a; */
         }
 
         /* Form styles */
         form {
             background-color: #fff;
-            padding: 20px;
+            padding: 30px;
             border-radius: 5px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
@@ -46,7 +50,7 @@
 
         /* Button styles */
         button[type="submit"] {
-            background-color: #007bff;
+            background-color: #4283c9;
             color: #fff;
             border: none;
             padding: 10px 20px;
@@ -56,7 +60,7 @@
         }
 
         button[type="submit"]:hover {
-            background-color: #0056b3;
+            background-color: #78a1ce;
         }
 
         /* Disabled button styles */
@@ -71,24 +75,60 @@
             margin-top: 10px;
             display: none;
         }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1>PDF Converter</h1>
-        <form id="uploadForm" action="/upload" method="post" enctype="multipart/form-data">
-            <input type="text" name="query" placeholder="Enter your query">
-            <input type="file" name="file" accept=".pdf">
-            <button id="uploadButton" type="submit">Upload</button>
-        </form>
-        <p id="processingMessage">File is being processed, your download should begin once the file is processed.</p>
-    </div>
 
-    <script>
-        document.getElementById('uploadForm').addEventListener('submit', function() {
-            document.getElementById('processingMessage').style.display = 'block';
-            document.getElementById('uploadButton').setAttribute('disabled', 'disabled');
-        });
-    </script>
-</body>
-</html>
+
+                /* Chatbot styles */
+        .chatbot-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 300px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .chatbot-header {
+            background-color: #4283c9;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .chatbot-messages {
+            height: 200px;
+            overflow-y: auto;
+            padding: 10px;
+        }
+
+        .chatbot-messages p {
+            margin: 5px 0;
+        }
+
+        #chatInput {
+            width: calc(100% - 80px);
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 0;
+            border-top: none;
+            border-bottom-left-radius: 5px;
+            border-bottom-right-radius: 5px;
+        }
+
+        #sendButton {
+            width: 80px;
+            padding: 10px;
+            background-color: #4283c9;
+            color: #fff;
+            border: none;
+            border-radius: 0;
+            cursor: pointer;
+            border-bottom-left-radius: 5px;
+            border-bottom-right-radius: 5px;
+        }
+
+        #sendButton:hover {
+            background-color: #78a1ce;
+        }
